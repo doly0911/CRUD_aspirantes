@@ -41,34 +41,8 @@ function get_aspirant() {
         url: "candidate.php",
         success : function(data)
          {
-            response = JSON.parse(data).data;
-            console.log("response: ", response);
             const old_tbody = document.getElementById("tableBody")
-            const new_tbody = document.createElement('tbody');            
-            
-            response.forEach(element => {
-                var newRow = new_tbody.insertRow();
-                var newCell = newRow.insertCell();
-                var newText = document.createTextNode(element.id_aspirante);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(element.nombre);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(element.apellido);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(element.id_estado);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newCell.innerHTML = "<button onclick= 'edit_candidate("+ parseInt(element.id_aspirante)  + ")' class='btn btn-info'>Editar</button>" 
-                    + " <button onclick= delete_candidate("+ parseInt(element.id_aspirante) + ") class='btn btn-danger'>Eliminar</button>"
-            });
-            old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
+            old_tbody.innerHTML = data
          }
     })
         
@@ -87,7 +61,7 @@ function delete_candidate(id_aspirante){
         let result = JSON.parse(data);
         console.log(result.status) 
         if (result.status == 1) {
-            //document.getElementById(id).remove();
+            document.getElementById(id).remove();
             alert(result.data);
         }
         if(result.status== 0){
