@@ -12,12 +12,7 @@ $conexion = mysqli_connect($servidor, $usuario, $password) or die("No se ha podi
 mysqli_select_db($conexion, $basededatos) or die("Upps! Pues va a ser que no se ha podido conectar a la base de datos");
 
 $query = "SELECT * FROM aspirante";
-
-//var_export($query);
-
 $result = $conexion->query($query);
-//$row = $result->fetch_array(MYSQLI_ASSOC);
-
 
 $json = array();
 
