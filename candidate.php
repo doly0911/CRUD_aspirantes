@@ -12,16 +12,35 @@ $conexion = mysqli_connect($servidor, $usuario, $password) or die("No se ha podi
 mysqli_select_db($conexion, $basededatos) or die("Upps! Pues va a ser que no se ha podido conectar a la base de datos");
 
 $query = "SELECT * FROM aspirante";
-
-//var_export($query);
-
 $result = $conexion->query($query);
-//$row = $result->fetch_array(MYSQLI_ASSOC);
+?>
 
-
-$json = array();
-
-while ($row=mysqli_fetch_assoc($result)) {
-    array_push($json, $row);
+<tbody id="tableBody">
+<?php
+while ($row = mysqli_fetch_assoc($result)) {
+?>
+<tr id=<?php echo $row['id_aspirante'] ?>>
+    <td>
+        <?php echo $row['id_aspirante'] ?>
+    </td>
+    <td>
+        <?php echo $row['nombre'] ?>
+    </td>
+    <td>
+        <?php echo $row['apellido'] ?>
+    </td>
+    <td>
+        <?php echo $row['id_estado'] ?>
+    </td>
+    <td><button
+            onclick="edit_candidate(<?php echo $row['id_aspirante'] ?>)"
+            class="btn btn-info">Editar</button>
+        <button
+            onclick="delete_candidate(<?php echo $row['id_aspirante'] ?>)"
+            class="btn btn-danger">Eliminar</button>
+    </td>
+</tr>
+<?php
 }
-die (json_encode(array("status"=>"1", "data" => $json)));     
+?>
+</tbody>

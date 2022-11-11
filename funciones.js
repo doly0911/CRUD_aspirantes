@@ -30,53 +30,47 @@ function crearUsuario(){
 }
 
 function get_aspirant() {
-    var response ;
+    let response ;
 
     console.log("entre a get_aspirant")
        
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         cache: false,
         url: "candidate.php",
         success : function(data)
          {
-             response = JSON.parse(data).data;
             const old_tbody = document.getElementById("tableBody")
-            const new_tbody = document.createElement('tbody');
-            // Insert a row at the end of table
-            
-            response.forEach(element => {
-                var newRow = new_tbody.insertRow();
-                var newCell = newRow.insertCell();
-                var newText = document.createTextNode(element.id_aspirante);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(element.nombre);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(element.apellido);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newText = document.createTextNode(element.id_estado);
-                newCell.appendChild(newText);
-
-                newCell = newRow.insertCell();
-                newCell.innerHTML = "<a href='edit_candidate.php?id=" + element.id_aspirante + "' class='btn btn-info'>Editar</a>" 
-                    + " <a href='delete_candidate.php?id=" + element.id_aspirante + "' class='btn btn-danger'>Eliminar</a>"
-            });
-            old_tbody.parentNode.replaceChild(new_tbody, old_tbody)
-
-            // Insert a cell at the end of the row
-            
-             
-            console.log(response.data);
+            old_tbody.innerHTML = data
          }
     })
         
+}
+
+function delete_candidate(id_aspirante){
+    var id = id_aspirante;
+    console.log("llegue al js, id: ", id)
+
+    $.ajax({
+        url: "delete_candidate.php",
+        type: "POST",
+        data: {"id": id}
+    })
+    .done(function( data, textStatus, jqXHR ) {
+        let result = JSON.parse(data);
+        console.log(result.status) 
+        if (result.status == 1) {
+            document.getElementById(id).remove();
+            alert(result.data);
+        }
+        if(result.status== 0){
+            alert(result.data);
+        }
+     })
+     .fail(function( jqXHR, textStatus, errorThrown ) {
+         console.log("llegue al error de js: ", textStatus)
+    });
 }
 
 function clear_inputs(){        

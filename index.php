@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script type="text/javascript" src="funciones.js"></script>
     <script src="jquery-3.6.1.min.js"></script>
-    
+
     <title>CRUD_aspirantes</title>
 </head>
 
@@ -18,19 +18,19 @@
             <div class="col-md-3">
                 <h1>Datos aspirante</h1>
                 <!-- <form> -->
-                    <div class="form-group">
-                        <label>Nombre:</label>
-                        <input type="text" class="form-control" id="nombre">
-                    </div>
-                    <div class="form-group">
-                        <label>Apellidos:</label>
-                        <input type="text" class="form-control" id="apellido">
-                    </div>
-                    <div class="form-group">
-                        <label>Estado:</label>
-                        <input type="text" class="form-control" id="estado">
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="crearUsuario()">Crear</button>
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" class="form-control" id="nombre">
+                </div>
+                <div class="form-group">
+                    <label>Apellidos:</label>
+                    <input type="text" class="form-control" id="apellido">
+                </div>
+                <div class="form-group">
+                    <label>Estado:</label>
+                    <input type="text" class="form-control" id="estado">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="crearUsuario()">Crear</button>
                 <!-- </form> -->
             </div>
 
@@ -46,41 +46,51 @@
                             <th>Detalles</th>
                         </tr>
                     </thead>
-                    <tbody  id="tableBody">
-
                     
+                    <tbody id="tableBody">
                         <?php
-                    $usuario = "root";
-                $password = "root";
-                $servidor = "localhost";
-                $basededatos = "test_konecta";
+                        $usuario = "root";
+                        $password = "root";
+                        $servidor = "localhost";
+                        $basededatos = "test_konecta";
 
-                //creación de la conexión a la base de datos con mysql_connect()
-                $conexion = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al servidor de Base de datos");
+                        //creación de la conexión a la base de datos con mysql_connect()
+                        $conexion = mysqli_connect($servidor, $usuario, $password) or die("No se ha podido conectar al servidor de Base de datos");
 
-                // Selección de la BD
-                mysqli_select_db($conexion, $basededatos) or die("Upps! Pues va a ser que no se ha podido conectar a la base de datos");
+                        // Selección de la BD
+                        mysqli_select_db($conexion, $basededatos) or die("Upps! Pues va a ser que no se ha podido conectar a la base de datos");
 
-                $query = "SELECT * FROM aspirante";
+                        $query = "SELECT * FROM aspirante";
 
-                $result = $conexion->query($query);
+                        $result = $conexion->query($query);
 
-                while ($row=mysqli_fetch_assoc($result)) {
-                    ?>  
-                        <tr>
-                        <td><?php echo $row['id_aspirante']?></td>      
-                        <td><?php echo $row['nombre'] ?></td>
-                        <td><?php echo $row['apellido'] ?></td>
-                        <td><?php echo $row['id_estado'] ?></td>
-                        <td><a href="edit_candidate.php?id=<?php echo $row['id_aspirante'] ?>" class="btn btn-info">Editar</a> 
-                        <a href="delete_candidate.php?id=<?php echo $row['id_aspirante'] ?>"  class="btn btn-danger">Eliminar</a>                         
-                        </td>
+                        while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                        <tr id=<?php echo $row['id_aspirante'] ?>>
+                            <td>
+                                <?php echo $row['id_aspirante'] ?>
+                            </td>
+                            <td>
+                                <?php echo $row['nombre'] ?>
+                            </td>
+                            <td>
+                                <?php echo $row['apellido'] ?>
+                            </td>
+                            <td>
+                                <?php echo $row['id_estado'] ?>
+                            </td>
+                            <td><button
+                                    onclick="edit_candidate(<?php echo $row['id_aspirante'] ?>)"
+                                    class="btn btn-info">Editar</button>
+                                <button
+                                    onclick="delete_candidate(<?php echo $row['id_aspirante'] ?>)"
+                                    class="btn btn-danger">Eliminar</button>
+                            </td>
                         </tr>
-                    <?php 
-                    }
-                    ?>
-
-            </tbody>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
 
             </div>
         </div>
